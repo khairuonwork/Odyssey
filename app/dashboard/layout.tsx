@@ -1,18 +1,20 @@
+// Lokasi: app/dashboard/layout.tsx
 import type { Metadata } from "next";
 import "../globals.css";
-import "./roadmap.css"; // Impor CSS ini sudah benar
+import "./roadmap.css";
+// HAPUS SEMUA IMPORT LAIN (seperti Sidebar)
 
-// Hapus font, karena sudah ada di layout utama
-// Hapus metadata, karena kita bisa atur di page.tsx jika perlu
+export const metadata: Metadata = {
+  title: "Dashboard",
+  description: "Your Odyssey Dashboard",
+};
 
-export default function DashboardLayout({ // Ubah nama fungsi agar lebih spesifik
+export default function DashboardLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    // Hapus <html> dan <body>
-    // Cukup kembalikan children, atau bungkus dengan <section> jika perlu
-    <>{children}</>
-  );
+  // Pastikan HANYA <>{children}</> yang ada di sini.
+  // JANGAN letakkan <Sidebar> di sini.
+  return <>{children}</>;
 }

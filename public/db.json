@@ -1,0 +1,13 @@
+{
+  "users": {
+    "mirae@odyssey.com": {
+      "email": "mirae@odyssey.com",
+      "fullName": "Mirae Nakamura",
+      "status": "Student",
+      "avatar": "/default/default_profile.png",
+      "password": "123",
+      "progress": ["f1", "i2"]
+    }
+  },
+  "currentUserEmail": null
+}

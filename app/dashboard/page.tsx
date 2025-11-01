@@ -1,23 +1,35 @@
+// Lokasi: app/dashboard/page.tsx
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import Sidebar from "@/components/sidebar"; // Pastikan path ini benar
-
+import Sidebar from "@/components/sidebar"; // Sidebar di-impor di SINI
 import Dashboard from "@/components/roadmap-personalization";
 import LearningMaterial from "@/components/learning-material";
 import SkillTracking from "@/components/skill-tracking";
 import Projects from "@/components/projects";
+import Profile from "@/components/profile";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
 
-// Tentukan tipe untuk view agar lebih aman
-type ActiveView = "dashboard" | "learning" | "tracking" | "projects";
+type ActiveView = "dashboard" | "learning" | "tracking" | "projects" | "profile";
 
 export default function Home() {
-  // Gunakan state untuk melacak tombol/view yang aktif
   const [activeView, setActiveView] = useState<ActiveView>("dashboard");
 
-  // Helper function untuk merender komponen yang benar
+  // --- Auth Guard ---
+  const { isAuthenticated } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    // Jika auth belum siap, atau jika user tidak terautentikasi, redirect
+    if (!isAuthenticated) {
+      router.push("/login");
+    }
+  }, [isAuthenticated, router]);
+  // --------------------
+
   const renderActiveView = () => {
     switch (activeView) {
       case "dashboard":
@@ -28,25 +40,29 @@ export default function Home() {
         return <SkillTracking />;
       case "projects":
         return <Projects />;
+      case "profile":
+        return <Profile />;
       default:
-        return <Dashboard />; // Default ke dashboard
+        return <Dashboard />;
     }
   };
 
-  return (
-    <main className="min-h-screen bg-background">
-      <Header />
-      <div className="container mx-auto flex gap-12 px-6 py-12">
-        {/* Kirim state aktif dan fungsi untuk mengubahnya ke Sidebar.
-          Saya ganti px-50 Anda ke px-6 agar konsisten dengan header.
-        */}
-        <Sidebar activeView={activeView} onNavClick={setActiveView} />
+  // --- Ini adalah penyebab halaman kosong ---
+  // Jika tidak terautentikasi, render 'null' selagi menunggu redirect
+  if (!isAuthenticated) {
+    return null;
+  }
 
-        {/* Main Content */}
-        <div className="flex-1">
-          {/* Render komponen berdasarkan state yang aktif */}
-          {renderActiveView()}
-        </div>
+  // --- Jika Lolos Auth Guard ---
+  // Tampilkan seluruh halaman, TERMASUK Sidebar
+  return (
+    <main className="min-h-screen">
+      <Header onProfileClick={() => setActiveView("profile")} />
+
+      <div className="max-w-6xl mx-auto flex gap-12 px-6 py-12">
+        {/* Sidebar HARUS berada di dalam 'page.tsx' ini */}
+        <Sidebar activeView={activeView} onNavClick={setActiveView} />
+        <div className="flex-1">{renderActiveView()}</div>
       </div>
       <Footer />
     </main>

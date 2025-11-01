@@ -1,57 +1,78 @@
-// Simpan sebagai: app/course/page.tsx
+// Lokasi: app/course/page.tsx
+"use client"; // 1. Tambahkan "use client"
+
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import OngoingCourseCard from "@/components/OngoingCourseCard"; // Komponen baru
-import AvailableCourseCard from "@/components/AvailableCourseCard"; // Komponen baru
+import OngoingCourseCard from "@/components/OngoingCourseCard";
+import AvailableCourseCard from "@/components/AvailableCourseCard";
+import { useUserProgress } from "@/context/UserProgressContext"; // 2. Impor hook progres
+import { allLessonsData } from "@/lib/learningData"; // 3. Impor data pelajaran
+import { useAuth } from "@/context/AuthContext"; // 4. Impor hook auth
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function CoursePage() {
-  // Data dummy untuk On-going Courses (sesuai desain, ada 2)
-  const ongoingCourses = [
-    {
-      roadmapName: "DevOps",
-      nextTarget: "Operating system",
-      progress: 40,
-      total: 100,
-    },
-    {
-      roadmapName: "DevOps",
-      nextTarget: "Operating system",
-      progress: 40,
-      total: 100,
-    },
-  ];
+  // 5. Ambil data progres dinamis dari Context
+  const { progressPercent, completedItems } = useUserProgress();
+  const { isAuthenticated } = useAuth();
+  const router = useRouter();
 
-  // Data dummy untuk Available Courses
+  // 6. Proteksi halaman, jika belum login, lempar ke /login
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push("/login");
+    }
+  }, [isAuthenticated, router]);
+
+  // Dapatkan total pelajaran dari data kita
+  const totalLessons = allLessonsData.length;
+
+  // 7. Buat data untuk "On-going Course" secara dinamis
+  // Karena kita hanya punya 1 roadmap (DevOps), kita tampilkan 1 kartu
+  const ongoingCourse = {
+    roadmapName: "DevOps",
+    nextTarget: "Operating system", // Ini bisa kita buat lebih dinamis nanti
+    progressPercent: progressPercent,
+    completedCount: completedItems.size,
+    totalCount: totalLessons,
+  };
+
+  // Data dummy untuk "Available Course" (sesuai desain Anda)
   const availableCourses = [
     {
       title: "Web development",
       description:
         "Web development is the process of building websites and web apps that live on the internet. It involves front-end, back-end, or full-stack development...",
       lessons: 200,
-      href: "/dashboard", // Dari sini baru ke dashboard
+      href: "#", // Belum ada, jadi non-aktifkan
     },
     {
       title: "Data Science",
       description:
         "Data science helps us make informed decisions. Taking a data-driven approach means you're able to realize what you can produce every day...",
       lessons: 200,
-      href: "/dashboard",
+      href: "#",
     },
     {
       title: "Web Design",
       description:
         "Our web design courses will help you build beautiful, responsive websites. Learn user experience (UX), user interface (UI) design, navigation design, and more...",
       lessons: 200,
-      href: "/dashboard",
+      href: "#",
     },
     {
       title: "AI",
       description:
         "Artificial intelligence (AI) allows computers and other machines to accomplish tasks associated with the human mind – like problem-solving and decision-making.",
       lessons: 200,
-      href: "/dashboard",
+      href: "#",
     },
   ];
+
+  // Tampilkan 'null' selagi redirect
+  if (!isAuthenticated) {
+    return null;
+  }
 
   return (
     <main className="min-h-screen bg-[#f7f3ec] text-black flex flex-col">
@@ -62,15 +83,18 @@ export default function CoursePage() {
         {/* Bagian On-going Course */}
         <h2 className="text-3xl font-bold text-black mb-6">On-going Course</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-          {ongoingCourses.map((course, index) => (
-            <OngoingCourseCard
-              key={index}
-              roadmapName={course.roadmapName}
-              nextTarget={course.nextTarget}
-              progress={course.progress}
-              total={course.total}
-            />
-          ))}
+          {/* 8. Render kartu "On-going Course" dengan data dinamis
+            (Desain Anda ada 2 kartu, tapi secara logis 
+             kita hanya tampilkan 1 course yang sedang diikuti)
+          */}
+          <OngoingCourseCard
+            key={ongoingCourse.roadmapName}
+            roadmapName={ongoingCourse.roadmapName}
+            nextTarget={ongoingCourse.nextTarget}
+            progressPercent={ongoingCourse.progressPercent}
+            completedCount={ongoingCourse.completedCount}
+            totalCount={ongoingCourse.totalCount}
+          />
         </div>
 
         {/* Bagian Available Course */}

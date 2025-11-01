@@ -1,19 +1,19 @@
+// Lokasi: components/sidebar.tsx
 "use client";
 
+// 1. Hapus 'User' dari impor
 import { LayoutDashboard, BookOpen, Target, FolderOpen } from "lucide-react";
 
-// Tentukan tipe untuk props yang diterima dari app/dashboard/page.tsx
+// 2. Hapus 'profile' dari tipe
 type ActiveView = "dashboard" | "learning" | "tracking" | "projects";
 
 interface SidebarProps {
-  activeView: ActiveView; // State yang sedang aktif
-  onNavClick: (view: ActiveView) => void; // Fungsi untuk mengubah state
+  activeView: ActiveView;
+  onNavClick: (view: ActiveView) => void;
 }
 
-// TERIMA props activeView dan onNavClick
 export default function Sidebar({ activeView, onNavClick }: SidebarProps) {
   const menuItems = [
-    // TAMBAHKAN properti 'view' untuk identifikasi state
     {
       icon: LayoutDashboard,
       label: "Dashboard",
@@ -34,6 +34,7 @@ export default function Sidebar({ activeView, onNavClick }: SidebarProps) {
       label: "Projects",
       view: "projects" as ActiveView,
     },
+    // 3. Hapus item menu 'Profile' dari sini
   ];
 
   return (
@@ -45,16 +46,31 @@ export default function Sidebar({ activeView, onNavClick }: SidebarProps) {
         <div className="space-y-1">
           {menuItems.map((item) => {
             const Icon = item.icon;
+            const isActive = activeView === item.view;
+
             return (
-              // GANTI <a> menjadi <button>
-              // TAMBAHKAN onClick untuk mengubah state di page.tsx
               <button
                 key={item.label}
                 onClick={() => onNavClick(item.view)}
-                className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-700 hover:bg-[#F5EFE7] transition-colors group w-full" // w-full agar tombolnya selebar kontainer
+                className={`
+                  flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-700 hover:bg-[#F5EFE7] transition-colors group w-full text-left
+                  ${isActive ? "bg-[#F5EFE7]" : ""} 
+                `}
               >
-                <Icon className="w-5 h-5 text-gray-600 group-hover:text-[#213555]" />
-                <span className="text-sm font-medium">{item.label}</span>
+                <Icon
+                  className={`
+                    w-5 h-5 text-gray-600 group-hover:text-[#213555]
+                    ${isActive ? "text-[#213555]" : ""}
+                  `}
+                />
+                <span
+                  className={`
+                    text-sm font-medium
+                    ${isActive ? "font-bold text-[#213555]" : ""}
+                  `}
+                >
+                  {item.label}
+                </span>
               </button>
             );
           })}
