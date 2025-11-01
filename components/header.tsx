@@ -15,8 +15,8 @@ export default function Header() {
   const displayAvatarUrl = AVATAR_URL || DEFAULT_AVATAR;
 
   return (
-    <header className="w-full border-b-3 border-black bg-[#F5EFE7] sticky top-0 z-10 backdrop-blur-sm font-semibold">
-      <div className="container mx-auto flex items-center justify-between px-6 py-3">
+    <header className="bg-[#f7f3ec] border-b border-[#1e1e1e]">
+      <div className="max-w-6xl mx-auto flex justify-between items-center py-4 px-6">
         {/* === Item 1: Logo (Kiri) === */}
         <a href="/" className="flex items-center gap-2.5">
           <Image
