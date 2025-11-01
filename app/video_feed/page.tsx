@@ -7,7 +7,6 @@ export default function LessonPage() {
         <main className="min-h-screen bg-[#f7f3ec] text-black flex flex-col">
             <Header />
 
-            {/* Content Section */}
             <section className="flex-1 py-12 px-6 md:px-12">
                 <div className="max-w-5xl mx-auto">
                     {/* Back Button */}
@@ -26,7 +25,15 @@ export default function LessonPage() {
                         </h1>
 
                         {/* Placeholder (video or image area) */}
-                        <div className="bg-gray-300 rounded-md w-full aspect-video"></div>
+                        <div className="w-full aspect-video rounded-md overflow-hidden border border-gray-300">
+                            <iframe
+                                src="https://www.youtube.com/embed/K5KVEU3aaeQ?si=EO3VZAxanlQd2iiu"
+                                title="Version Control System"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                                className="w-full h-full"
+                            ></iframe>
+                        </div>
                     </div>
 
                     {/* Question below */}
