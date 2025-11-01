@@ -2,12 +2,38 @@
 
 import { LayoutDashboard, BookOpen, Target, FolderOpen } from "lucide-react";
 
-export default function Sidebar() {
+// Tentukan tipe untuk props yang diterima dari app/dashboard/page.tsx
+type ActiveView = "dashboard" | "learning" | "tracking" | "projects";
+
+interface SidebarProps {
+  activeView: ActiveView; // State yang sedang aktif
+  onNavClick: (view: ActiveView) => void; // Fungsi untuk mengubah state
+}
+
+// TERIMA props activeView dan onNavClick
+export default function Sidebar({ activeView, onNavClick }: SidebarProps) {
   const menuItems = [
-    { icon: LayoutDashboard, label: "Dashboard", href: "#" },
-    { icon: BookOpen, label: "Learning Material", href: "#" },
-    { icon: Target, label: "Skill tracking", href: "#" },
-    { icon: FolderOpen, label: "Projects", href: "#" },
+    // TAMBAHKAN properti 'view' untuk identifikasi state
+    {
+      icon: LayoutDashboard,
+      label: "Dashboard",
+      view: "dashboard" as ActiveView,
+    },
+    {
+      icon: BookOpen,
+      label: "Learning Material",
+      view: "learning" as ActiveView,
+    },
+    {
+      icon: Target,
+      label: "Skill tracking",
+      view: "tracking" as ActiveView,
+    },
+    {
+      icon: FolderOpen,
+      label: "Projects",
+      view: "projects" as ActiveView,
+    },
   ];
 
   return (
@@ -20,14 +46,16 @@ export default function Sidebar() {
           {menuItems.map((item) => {
             const Icon = item.icon;
             return (
-              <a
+              // GANTI <a> menjadi <button>
+              // TAMBAHKAN onClick untuk mengubah state di page.tsx
+              <button
                 key={item.label}
-                href={item.href}
-                className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-700 hover:bg-[#F5EFE7] transition-colors group"
+                onClick={() => onNavClick(item.view)}
+                className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-700 hover:bg-[#F5EFE7] transition-colors group w-full" // w-full agar tombolnya selebar kontainer
               >
                 <Icon className="w-5 h-5 text-gray-600 group-hover:text-[#213555]" />
                 <span className="text-sm font-medium">{item.label}</span>
-              </a>
+              </button>
             );
           })}
         </div>

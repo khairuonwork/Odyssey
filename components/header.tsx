@@ -3,6 +3,7 @@
 
 import React from "react";
 import Image from "next/image"; // Impor Next.js Image
+import Link from "next/link"; // IMPOER Link untuk navigasi
 
 // Asumsi logo ada di /public/logo/odyssey_logo.png
 const LOGO_URL = "/logo/odyssey_logo.png";
@@ -18,7 +19,8 @@ export default function Header() {
     <header className="bg-[#f7f3ec] border-b border-[#1e1e1e]">
       <div className="max-w-6xl mx-auto flex justify-between items-center py-4 px-6">
         {/* === Item 1: Logo (Kiri) === */}
-        <a href="/" className="flex items-center gap-2.5">
+        {/* GANTI <a> ke <Link> */}
+        <Link href="/" className="flex items-center gap-2.5">
           <Image
             src={LOGO_URL}
             alt="Odyssey Logo"
@@ -34,24 +36,26 @@ export default function Header() {
               Embark For Knowledge
             </p>
           </div>
-        </a>
+        </Link>
         <nav>
           <ul className="flex items-center gap-6">
             <li>
-              <a
-                href="/learn"
+              {/* GANTI <a> ke <Link> dan arahkan ke /dashboard */}
+              <Link
+                href="/dashboard"
                 className="text-[22px] font-medium text-[#213555] hover:text-blue-800 transition-colors font-semibold"
               >
                 Learn Path
-              </a>
+              </Link>
             </li>
             <li>
-              <a
-                href="/course"
+              {/* GANTI <a> ke <Link> dan arahkan ke / (homepage) */}
+              <Link
+                href="/"
                 className="text-[22px] font-medium text-[#213555] hover:text-blue-800 transition-colors font-semibold"
               >
                 Course
-              </a>
+              </Link>
             </li>
           </ul>
         </nav>
